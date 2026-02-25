@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SHADOW STREAM | UPDATED FEED</title>
+    <title>SHADOW STREAM | LIVE FEED</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -13,8 +13,8 @@
         .app-container::-webkit-scrollbar { display: none; }
         .video-card { height: 100vh; scroll-snap-align: start; position: relative; background: #000; }
         video { width: 100%; height: 100%; object-fit: cover; }
-        .glass-actions { position: absolute; left: 15px; bottom: 120px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 25px 12px; border-radius: 40px; display: flex; flex-direction: column; gap: 30px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 10; }
-        .info-panel { position: absolute; bottom: 50px; right: 20px; left: 100px; z-index: 10; text-align: right; }
+        .glass-actions { position: absolute; left: 15px; bottom: 100px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 25px 12px; border-radius: 40px; display: flex; flex-direction: column; gap: 30px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 10; }
+        .info-panel { position: absolute; bottom: 40px; right: 20px; left: 100px; z-index: 10; text-align: right; }
         .logo { font-family: 'Orbitron', sans-serif; color: #00f3ff; text-shadow: 0 0 10px #00f3ff; }
     </style>
 </head>
@@ -22,7 +22,10 @@
 
     <div class="absolute top-0 w-full z-50 p-6 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
         <h1 class="text-xl font-bold logo italic">SHΔDØW</h1>
-        <div class="flex items-center gap-2"><div class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div><span class="text-[10px] font-black tracking-widest uppercase">Live Collection</span></div>
+        <div class="flex items-center gap-2">
+            <div class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
+            <span class="text-[10px] font-black">STREAMING NOW</span>
+        </div>
     </div>
 
     <div class="app-container" id="feed"></div>
@@ -30,48 +33,55 @@
     <script>
         const cloudName = 'dssk5tabb';
         
-        // القائمة الجديدة المحدثة بالترتيب الذي طلبته
+        // القائمة المحدثة بالترتيب الذي طلبته
         const videoData = [
-            { id: '01_Itzbic', tag: '@Shadow_Alpha' },
-            { id: '02_nz4lq0', tag: '@Shadow_Core' },
-            { id: '03_wicOob', tag: '@Shadow_System' },
-            { id: '04_qeyknx', tag: '@Shadow_Protocol' },
-            { id: '05_ggqazk', tag: '@Shadow_Data' },
-            { id: '07_rone4t', tag: '@Shadow_Extra' },
-            { id: '06_quce2q', tag: '@Shadow_End' }
+            { id: '02_nz4lq0' },
+            { id: '03_wicOob' },
+            { id: '04_qeyknx' },
+            { id: '05_ggqazk' },
+            { id: '07_rone4t' },
+            { id: '06_quce2q' }
         ];
 
         const feed = document.getElementById('feed');
         
-        videoData.forEach((video) => {
+        videoData.forEach((item) => {
             const card = document.createElement('div');
             card.className = 'video-card';
             card.innerHTML = `
-                <video loop playsinline muted src="https://res.cloudinary.com/${cloudName}/video/upload/q_auto,f_auto/${video.id}.mp4"></video>
+                <video loop playsinline muted src="https://res.cloudinary.com/${cloudName}/video/upload/q_auto,f_auto/${item.id}.mp4"></video>
                 <div class="glass-actions">
-                    <div class="flex flex-col items-center"><i class="fas fa-bolt text-2xl text-cyan-400"></i><span class="text-[9px] mt-1 font-bold uppercase">Fast</span></div>
+                    <div class="flex flex-col items-center"><i class="fas fa-bolt text-2xl text-cyan-400"></i><span class="text-[9px] mt-1 font-bold">FAST</span></div>
                     <div class="flex flex-col items-center"><i class="fas fa-share-nodes text-2xl text-white"></i></div>
                 </div>
                 <div class="info-panel">
-                    <h3 class="font-bold text-xl text-cyan-400 mb-1">${video.tag}</h3>
-                    <p class="text-sm text-white/80">المعرف: ${video.id}</p>
+                    <h3 class="font-bold text-xl text-cyan-400 mb-1">@Shadow_Core</h3>
+                    <p class="text-sm text-white/80">المعرف: ${item.id} 🩸</p>
                 </div>
                 <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80 pointer-events-none"></div>
             `;
             feed.appendChild(card);
         });
 
+        // مراقب التقاطع لتشغيل الفيديو الظاهر فقط
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const v = entry.target.querySelector('video');
-                if (entry.isIntersecting) v.play().catch(e => console.log("User interaction required"));
-                else { v.pause(); v.currentTime = 0; }
+                if (entry.isIntersecting) {
+                    v.play().catch(e => console.log("التفاعل مطلوب لتشغيل الصوت"));
+                } else {
+                    v.pause();
+                    v.currentTime = 0;
+                }
             });
         }, { threshold: 0.6 });
 
         document.querySelectorAll('.video-card').forEach(c => observer.observe(c));
 
-        window.onclick = () => { document.querySelectorAll('video').forEach(v => v.muted = false); };
+        // تفعيل الصوت عند أول لمسة للشاشة
+        window.onclick = () => { 
+            document.querySelectorAll('video').forEach(v => v.muted = false); 
+        };
     </script>
 </body>
 </html>
