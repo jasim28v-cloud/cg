@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SHADOW STREAM | LIVE FEED</title>
+    <title>SHADOW STREAM | UPDATED FEED</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -22,7 +22,7 @@
 
     <div class="absolute top-0 w-full z-50 p-6 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
         <h1 class="text-xl font-bold logo italic">SHΔDØW</h1>
-        <div class="flex items-center gap-2"><div class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div><span class="text-[10px] font-black tracking-widest">LIVE STREAM</span></div>
+        <div class="flex items-center gap-2"><div class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div><span class="text-[10px] font-black tracking-widest uppercase">Live Collection</span></div>
     </div>
 
     <div class="app-container" id="feed"></div>
@@ -30,32 +30,33 @@
     <script>
         const cloudName = 'dssk5tabb';
         
-        // تم تحديث الأسماء والترتيب كما طلبت
-        const videoList = [
-            { id: '01', title: 'المقطع الأول', tag: '@Shadow_01' },
-            { id: '02', title: 'المقطع الثاني', tag: '@Shadow_02' },
-            { id: '03', title: 'المقطع الثالث', tag: '@Shadow_03' },
-            { id: '04', title: 'المقطع الرابع', tag: '@Shadow_04' },
-            { id: '05', title: 'المقطع الخامس', tag: '@Shadow_05' }
+        // القائمة الجديدة المحدثة بالترتيب الذي طلبته
+        const videoData = [
+            { id: '01_Itzbic', tag: '@Shadow_Alpha' },
+            { id: '02_nz4lq0', tag: '@Shadow_Core' },
+            { id: '03_wicOob', tag: '@Shadow_System' },
+            { id: '04_qeyknx', tag: '@Shadow_Protocol' },
+            { id: '05_ggqazk', tag: '@Shadow_Data' },
+            { id: '07_rone4t', tag: '@Shadow_Extra' },
+            { id: '06_quce2q', tag: '@Shadow_End' }
         ];
 
         const feed = document.getElementById('feed');
         
-        videoList.forEach((video) => {
+        videoData.forEach((video) => {
             const card = document.createElement('div');
             card.className = 'video-card';
             card.innerHTML = `
                 <video loop playsinline muted src="https://res.cloudinary.com/${cloudName}/video/upload/q_auto,f_auto/${video.id}.mp4"></video>
                 <div class="glass-actions">
-                    <div class="flex flex-col items-center"><i class="fas fa-bolt text-2xl text-cyan-400"></i><span class="text-[9px] mt-1 font-bold">FAST</span></div>
+                    <div class="flex flex-col items-center"><i class="fas fa-bolt text-2xl text-cyan-400"></i><span class="text-[9px] mt-1 font-bold uppercase">Fast</span></div>
                     <div class="flex flex-col items-center"><i class="fas fa-share-nodes text-2xl text-white"></i></div>
                 </div>
                 <div class="info-panel">
                     <h3 class="font-bold text-xl text-cyan-400 mb-1">${video.tag}</h3>
-                    <p class="text-sm text-white/80">${video.title}</p>
-                    <p class="text-[10px] text-white/40 mt-1 uppercase">Source: ${video.id}.mp4</p>
+                    <p class="text-sm text-white/80">المعرف: ${video.id}</p>
                 </div>
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/90 pointer-events-none"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80 pointer-events-none"></div>
             `;
             feed.appendChild(card);
         });
@@ -63,18 +64,13 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const v = entry.target.querySelector('video');
-                if (entry.isIntersecting) {
-                    v.play().catch(e => console.log("Interaction required"));
-                } else {
-                    v.pause();
-                    v.currentTime = 0;
-                }
+                if (entry.isIntersecting) v.play().catch(e => console.log("User interaction required"));
+                else { v.pause(); v.currentTime = 0; }
             });
         }, { threshold: 0.6 });
 
         document.querySelectorAll('.video-card').forEach(c => observer.observe(c));
 
-        // تفعيل الصوت عند اللمس
         window.onclick = () => { document.querySelectorAll('video').forEach(v => v.muted = false); };
     </script>
 </body>
