@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SHADOW STREAM | LIVE FEED</title>
+    <title>SHADOW STREAM | FIXED</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -13,7 +13,7 @@
         .app-container::-webkit-scrollbar { display: none; }
         .video-card { height: 100vh; scroll-snap-align: start; position: relative; background: #000; }
         video { width: 100%; height: 100%; object-fit: cover; }
-        .glass-actions { position: absolute; left: 15px; bottom: 100px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 25px 12px; border-radius: 40px; display: flex; flex-direction: column; gap: 30px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 10; }
+        .glass-actions { position: absolute; left: 15px; bottom: 100px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(15px); padding: 25px 12px; border-radius: 40px; display: flex; flex-direction: column; gap: 30px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 10; }
         .info-panel { position: absolute; bottom: 40px; right: 20px; left: 100px; z-index: 10; text-align: right; }
         .logo { font-family: 'Orbitron', sans-serif; color: #00f3ff; text-shadow: 0 0 10px #00f3ff; }
     </style>
@@ -22,7 +22,7 @@
 
     <div class="absolute top-0 w-full z-50 p-6 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
         <h1 class="text-xl font-bold logo italic">SHΔDØW</h1>
-        <div class="flex items-center gap-2"><div class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div><span class="text-[10px] font-black">STREAMING NOW</span></div>
+        <div class="flex items-center gap-2"><div class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div><span class="text-[10px] font-black">SYSTEM ACTIVE</span></div>
     </div>
 
     <div class="app-container" id="feed"></div>
@@ -30,31 +30,31 @@
     <script>
         const cloudName = 'dssk5tabb';
         
-        // الأسماء الجديدة التي طلبتها بالترتيب المحفوظ
-        const videoIds = [
-            '01',
-            '02',
-            '03',
-            '04',
-            '05'
-        ];
+        // تعديل الأسماء لتتطابق تماماً مع نظام Cloudinary
+        const videoIds = ['01', '02', '03', '04', '05'];
 
         const feed = document.getElementById('feed');
         
         videoIds.forEach((id) => {
             const card = document.createElement('div');
             card.className = 'video-card';
+            
+            // تم تصحيح بناء الرابط هنا لضمان الجلب المباشر
+            const videoUrl = `https://res.cloudinary.com/${cloudName}/video/upload/f_auto,q_auto/${id}.mp4`;
+            
             card.innerHTML = `
-                <video loop playsinline muted src="https://res.cloudinary.com/${cloudName}/video/upload/q_auto,f_auto/${id}.mp4"></video>
+                <video loop playsinline muted preload="auto">
+                    <source src="${videoUrl}" type="video/mp4">
+                </video>
                 <div class="glass-actions">
-                    <div class="flex flex-col items-center"><i class="fas fa-bolt text-2xl text-cyan-400"></i><span class="text-[9px] mt-1 font-bold">FAST</span></div>
+                    <div class="flex flex-col items-center"><i class="fas fa-bolt text-2xl text-cyan-400"></i><span class="text-[9px] mt-1 font-bold">V99</span></div>
                     <div class="flex flex-col items-center"><i class="fas fa-share-nodes text-2xl text-white"></i></div>
                 </div>
                 <div class="info-panel">
                     <h3 class="font-bold text-xl text-cyan-400 mb-1">@Shadow_Core</h3>
-                    <p class="text-sm text-white/80">المعرف: ${id} 🩸</p>
+                    <p class="text-sm text-white/80 italic">Stream: ${id}</p>
                 </div>
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80 pointer-events-none"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/90 pointer-events-none"></div>
             `;
             feed.appendChild(card);
         });
@@ -62,14 +62,26 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const v = entry.target.querySelector('video');
-                if (entry.isIntersecting) v.play().catch(e => console.log("Interaction needed"));
-                else { v.pause(); v.currentTime = 0; }
+                if (entry.isIntersecting) {
+                    v.play().catch(() => {
+                        console.log("Waiting for user interaction...");
+                    });
+                } else {
+                    v.pause();
+                    v.currentTime = 0;
+                }
             });
-        }, { threshold: 0.6 });
+        }, { threshold: 0.5 });
 
         document.querySelectorAll('.video-card').forEach(c => observer.observe(c));
 
-        window.onclick = () => { document.querySelectorAll('video').forEach(v => v.muted = false); };
+        // تفعيل الصوت والتشغيل عند أول لمسة إجبارياً
+        window.onclick = () => {
+            document.querySelectorAll('video').forEach(v => {
+                v.muted = false;
+                v.play();
+            });
+        };
     </script>
 </body>
 </html>
